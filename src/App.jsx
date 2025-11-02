@@ -12,6 +12,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Navigation from './components/layout/Navigation';
 import ErrorBoundary from './components/ErrorBoundary';
+import ScrollToTop from './components/ScrollToTop';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -73,6 +74,7 @@ function App() {
           <UserProvider>
             <EmergencyProvider>
               <ChatProvider>
+                <ScrollToTop />
                 <Routes>
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLoginPage />} />
