@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Shield, Mail, Lock, AlertCircle } from 'lucide-react';
+import { Shield, Mail, Lock, AlertCircle, ShieldAlert } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -116,6 +116,23 @@ const ErrorMessage = styled.div`
   }
 `;
 
+const WarningMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3);
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: var(--radius-lg);
+  color: #92400e;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  
+  svg {
+    flex-shrink: 0;
+  }
+`;
+
 const Button = styled.button`
   width: 100%;
   padding: var(--spacing-3);
@@ -165,6 +182,7 @@ const AdminLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
   const [loading, setLoading] = useState(false);
   
   const { login } = useAdmin();
@@ -173,6 +191,7 @@ const AdminLoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setWarning('');
     setLoading(true);
 
     try {
@@ -182,6 +201,16 @@ const AdminLoginPage = () => {
         navigate('/admin/dashboard');
       } else {
         setError(result.message || 'Login failed. Please check your credentials.');
+        
+        // Show warning about remaining attempts
+        if (result.warning) {
+          setWarning(result.warning);
+        }
+        
+        // Show lockout status
+        if (result.locked) {
+          setError(result.message);
+        }
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
@@ -207,6 +236,13 @@ const AdminLoginPage = () => {
               <AlertCircle size={18} />
               <span>{error}</span>
             </ErrorMessage>
+          )}
+          
+          {warning && !error && (
+            <WarningMessage>
+              <ShieldAlert size={18} />
+              <span>{warning}</span>
+            </WarningMessage>
           )}
 
           <FormGroup>

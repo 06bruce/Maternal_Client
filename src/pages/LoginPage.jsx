@@ -592,23 +592,6 @@ const LoginPage = () => {
           🗑️ Clear All Stored Data
         </ClearDataButton>
 
-        <Divider>
-          <span>Admin Access</span>
-        </Divider>
-
-        <Link to="/admin/login" style={{
-          display: 'block',
-          textAlign: 'center',
-          color: 'var(--primary)',
-          textDecoration: 'none',
-          fontWeight: '600',
-          padding: 'var(--spacing-3)',
-          borderRadius: 'var(--radius-lg)',
-          border: '2px solid var(--primary)',
-          transition: 'all 0.2s'
-        }}>
-          🔐 Admin Login
-        </Link>
       </LoginCard>
     </LoginContainer>
   );

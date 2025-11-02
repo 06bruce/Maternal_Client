@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { securityManager, sanitizeInput, isValidEmail } from '../utils/securityUtils';
 
 const AdminContext = createContext();
 
@@ -50,9 +51,29 @@ export const AdminProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      // Check if account is locked
+      const lockStatus = securityManager.isLocked();
+      if (lockStatus.locked) {
+        securityManager.logSecurityEvent('login_attempt_while_locked', { email });
+        return { 
+          success: false, 
+          message: lockStatus.message,
+          locked: true
+        };
+      }
+
+      // Validate input
+      const sanitizedEmail = sanitizeInput(email);
+      if (!isValidEmail(sanitizedEmail)) {
+        return { success: false, message: 'Invalid email format' };
+      }
+
+      // Enforce delay between attempts (client-side rate limiting)
+      await securityManager.enforceDelay();
+
       console.log('🔐 Admin login attempt to:', `${API_URL}/api/admin/login`);
       const response = await axios.post(`${API_URL}/api/admin/login`, {
-        email,
+        email: sanitizedEmail,
         password
       });
 
@@ -63,16 +84,44 @@ export const AdminProvider = ({ children }) => {
         localStorage.setItem('adminToken', token);
         setAdmin(admin);
         setIsAuthenticated(true);
+        
+        // Reset failed attempts on successful login
+        securityManager.resetAttempts();
+        securityManager.logSecurityEvent('login_success', { email: sanitizedEmail });
+        
         return { success: true };
       }
       
-      return { success: false, message: response.data.message };
+      // Record failed attempt
+      const attemptResult = securityManager.recordFailedAttempt();
+      securityManager.logSecurityEvent('login_failed', { 
+        email: sanitizedEmail,
+        attemptsRemaining: attemptResult.attemptsRemaining
+      });
+      
+      return { 
+        success: false, 
+        message: response.data.message,
+        attemptsRemaining: attemptResult.attemptsRemaining,
+        warning: attemptResult.message
+      };
     } catch (error) {
       console.error('❌ Admin login error:', error);
       console.error('Error details:', error.response?.data);
+      
+      // Record failed attempt
+      const attemptResult = securityManager.recordFailedAttempt();
+      securityManager.logSecurityEvent('login_error', { 
+        email,
+        error: error.message,
+        attemptsRemaining: attemptResult.attemptsRemaining
+      });
+      
       return {
         success: false,
-        message: error.response?.data?.message || error.message || 'Login failed'
+        message: error.response?.data?.message || error.message || 'Login failed',
+        attemptsRemaining: attemptResult.attemptsRemaining,
+        warning: attemptResult.message
       };
     }
   };

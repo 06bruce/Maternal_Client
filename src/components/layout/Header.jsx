@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import { 
   Heart, 
-  Menu, 
-  X, 
   Globe, 
   User, 
   Wifi,
@@ -20,11 +17,11 @@ const HeaderContainer = styled.header`
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(209, 137, 137, 0.95);
+  background: rgba(219, 121, 165, 0.49);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding: 0 var(--spacing-4);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
 const HeaderContent = styled.div`
@@ -39,7 +36,7 @@ const Logo = styled(Link)`
   align-items: center;
   gap: var(--spacing-1);
   text-decoration: none;
-  color: var(--primary);
+  color: #ffff;
   font-weight: 700;
   font-size: var(--font-size-x4);
 
@@ -99,53 +96,6 @@ const UserMenuButton = styled.button`
   }
 `;
 
-const MobileMenuButton = styled.button`
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border: none;
-  background: transparent;
-  color: var(--gray-700);
-  cursor: pointer;
-  
-  @media (max-width: 768px) {
-    display: flex;
-  }
-`;
-
-const MobileMenu = styled(motion.div)`
-  position: fixed;
-  top: 80px;
-  left: 0;
-  right: 0;
-  background: var(--white);
-  border-bottom: 1px solid var(--gray-200);
-  padding: var(--spacing-4);
-  box-shadow: var(--shadow-lg);
-  
-  @media (min-width: 769px) {
-    display: none;
-  }
-`;
-
-const MobileMenuItem = styled(Link)`
-  display: block;
-  padding: var(--spacing-3) 0;
-  color: var(--gray-700);
-  text-decoration: none;
-  border-bottom: 1px solid var(--gray-100);
-  font-weight: 500;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-  
-  &:hover {
-    color: var(--primary);
-  }
-`;
 
 const StatusIndicator = styled.div`
   display: flex;
@@ -166,9 +116,8 @@ const StatusIndicator = styled.div`
 `;
 
 const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { language, setLanguage, isOffline } = useChat();
-  const { user, logout } = useUser();
+  const { user } = useUser();
 
   const languages = [
     { code: 'rw', name: 'Kiny' },
@@ -180,11 +129,6 @@ const Header = () => {
 
   const handleLanguageChange = (langCode) => {
     setLanguage(langCode);
-  };
-
-  const handleLogout = () => {
-    logout();
-    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -221,51 +165,8 @@ const Header = () => {
             </UserMenuButton>
           )}
 
-          {/* Mobile Menu Button */}
-          <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </MobileMenuButton>
         </HeaderActions>
       </HeaderContent>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <MobileMenu
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.2 }}
-        >
-          <MobileMenuItem to="/" onClick={() => setIsMobileMenuOpen(false)}>
-            Home
-          </MobileMenuItem>
-          <MobileMenuItem to="/chat" onClick={() => setIsMobileMenuOpen(false)}>
-            Chat with Assistant
-          </MobileMenuItem>
-          <MobileMenuItem to="/pregnancy-tracker" onClick={() => setIsMobileMenuOpen(false)}>
-            Pregnancy Tracker
-          </MobileMenuItem>
-          <MobileMenuItem to="/dads-corner" onClick={() => setIsMobileMenuOpen(false)}>
-            Dad's Corner
-          </MobileMenuItem>
-          <MobileMenuItem to="/health-centers" onClick={() => setIsMobileMenuOpen(false)}>
-            Health Centers
-          </MobileMenuItem>
-          <MobileMenuItem to="/mental-health" onClick={() => setIsMobileMenuOpen(false)}>
-            Mental Health
-          </MobileMenuItem>
-          {user && (
-            <>
-              <MobileMenuItem to="/profile" onClick={() => setIsMobileMenuOpen(false)}>
-                Profile
-              </MobileMenuItem>
-              <MobileMenuItem as="button" onClick={handleLogout}>
-                Logout
-              </MobileMenuItem>
-            </>
-          )}
-        </MobileMenu>
-      )}
     </HeaderContainer>
   );
 };
