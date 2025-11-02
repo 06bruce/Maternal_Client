@@ -4,6 +4,7 @@ import { Calendar, Baby, Heart, Scale, Info, Loader } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import LoginBanner from '../components/LoginBanner';
 
 const TrackerContainer = styled.div`
   max-width: 1000px;
@@ -234,11 +235,13 @@ const PregnancyTracker = () => {
 
   if (!preferences.pregnancyStartDate) {
     return (
-      <TrackerContainer>
-        <Header>
-          <h1>Pregnancy Tracker Setup</h1>
-          <p>Set up your pregnancy dates to start tracking</p>
-        </Header>
+      <>
+        <LoginBanner message="Track Your Pregnancy Journey!" />
+        <TrackerContainer>
+          <Header>
+            <h1>Pregnancy Tracker Setup</h1>
+            <p>Set up your pregnancy dates to start tracking</p>
+          </Header>
         
         <SetupForm>
           <h3>Enter Your Pregnancy Information</h3>
@@ -260,12 +263,15 @@ const PregnancyTracker = () => {
           </div>
           <button onClick={handleSetup}>Start Tracking</button>
         </SetupForm>
-      </TrackerContainer>
+        </TrackerContainer>
+      </>
     );
   }
 
   return (
-    <TrackerContainer>
+    <>
+      <LoginBanner message="Track Your Pregnancy Journey!" />
+      <TrackerContainer>
       <Header>
         <h1>Pregnancy Tracker</h1>
         <p>Week {currentWeek} of 40</p>
@@ -343,7 +349,8 @@ const PregnancyTracker = () => {
           </p>
         )}
       </WeekInfo>
-    </TrackerContainer>
+      </TrackerContainer>
+    </>
   );
 };
 

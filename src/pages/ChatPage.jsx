@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Send, Wifi, WifiOff } from 'lucide-react';
 import { useChat } from '../context/ChatContext';
+import LoginBanner from '../components/LoginBanner';
 
 const ChatContainer = styled.div`
   max-width: 800px;
@@ -199,19 +200,21 @@ const ChatPage = () => {
   };
 
   return (
-    <ChatContainer>
-      <ChatHeader>
-        <div>🤖</div>
-        <div>
-          <h2>{language === 'rw' ? 'Umufasha wawe' : 'Your Assistant'}</h2>
+    <>
+      <LoginBanner message="Save Your Chat History!" />
+      <ChatContainer>
+        <ChatHeader>
+          <div>🤖</div>
           <div>
-            {isOffline ? <WifiOff size={14} /> : <Wifi size={14} />}
-            <span>{isOffline ? 'Offline' : 'Online'}</span>
+            <h2>{language === 'rw' ? 'Umufasha wawe' : 'Your Assistant'}</h2>
+            <div>
+              {isOffline ? <WifiOff size={14} /> : <Wifi size={14} />}
+              <span>{isOffline ? 'Offline' : 'Online'}</span>
+            </div>
           </div>
-        </div>
-      </ChatHeader>
+        </ChatHeader>
 
-      <MessagesContainer ref={messagesContainerRef}>
+        <MessagesContainer ref={messagesContainerRef}>
         {messages.map((msg) => (
           <Message key={msg.id} isUser={msg.type === 'user'}>
             <MessageContent className="message-content">
@@ -252,7 +255,8 @@ const ChatPage = () => {
           <Send size={20} />
         </SendButton>
       </InputContainer>
-    </ChatContainer>
+      </ChatContainer>
+    </>
   );
 };
 

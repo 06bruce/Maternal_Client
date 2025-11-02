@@ -43,7 +43,6 @@ import AdminEmergencies from './pages/AdminEmergencies';
 import AdminSettings from './pages/AdminSettings';
 import AdminLayout from './components/layout/AdminLayout';
 import AdminRoute from './components/AdminRoute';
-import ProtectedRoute from './components/ProtectedRoute';
 
 //Vercel Insight
 import { SpeedInsights } from "@vercel/speed-insights/react"
@@ -124,37 +123,13 @@ function App() {
                           <Route path="/privacy" element={<PrivacyPage/>} />
                           <Route path="/support" element={<SupportPage/>} />
                           
-                          {/* Protected Routes - Require Authentication */}
-                          <Route path="/chat" element={
-                            <ProtectedRoute>
-                              <ChatPage />
-                            </ProtectedRoute>
-                          } />
-                          <Route path="/pregnancy-tracker" element={
-                            <ProtectedRoute>
-                              <PregnancyTracker />
-                            </ProtectedRoute>
-                          } />
-                          <Route path="/dads-corner" element={
-                            <ProtectedRoute>
-                              <DadsCorner />
-                            </ProtectedRoute>
-                          } />
-                          <Route path="/health-centers" element={
-                            <ProtectedRoute>
-                              <HealthCenters />
-                            </ProtectedRoute>
-                          } />
-                          <Route path="/mental-health" element={
-                            <ProtectedRoute>
-                              <MentalHealth />
-                            </ProtectedRoute>
-                          } />
-                          <Route path="/profile" element={
-                            <ProtectedRoute>
-                              <ProfilePage />
-                            </ProtectedRoute>
-                          } />
+                          {/* Main App Routes - Now Accessible to All */}
+                          <Route path="/chat" element={<ChatPage />} />
+                          <Route path="/pregnancy-tracker" element={<PregnancyTracker />} />
+                          <Route path="/dads-corner" element={<DadsCorner />} />
+                          <Route path="/health-centers" element={<HealthCenters />} />
+                          <Route path="/mental-health" element={<MentalHealth />} />
+                          <Route path="/profile" element={<ProfilePage />} />
                         </Routes>
                       </ErrorBoundary>
                     </MainContent>
