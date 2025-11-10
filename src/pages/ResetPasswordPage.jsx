@@ -233,7 +233,6 @@ const ResetPasswordPage = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    setValidationErrors(validatePassword(newPassword));
     setError('');
   };
 
