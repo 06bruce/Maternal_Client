@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Lock, ArrowLeft, Heart, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Lock, ArrowLeft, Heart, Eye, EyeOff } from 'lucide-react';
 import { api, handleApiError } from '../utils/api';
 import { useUser } from '../context/UserContext';
 import toast from 'react-hot-toast';
