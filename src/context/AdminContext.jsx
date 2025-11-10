@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { securityManager, sanitizeInput, isValidEmail } from '../utils/securityUtils';
 
@@ -19,17 +19,7 @@ export const AdminProvider = ({ children }) => {
 
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
-  // Check if admin is logged in on mount
-  useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      verifyToken(token);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  const verifyToken = async (token) => {
+  const verifyToken = useCallback(async (token) => {
     try {
       const response = await axios.get(`${API_URL}/api/admin/me`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -47,7 +37,17 @@ export const AdminProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_URL]);
+
+  // Check if admin is logged in on mount
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      verifyToken(token);
+    } else {
+      setLoading(false);
+    }
+  }, [verifyToken]);
 
   const login = async (email, password) => {
     try {

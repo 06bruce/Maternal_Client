@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Heart, Calendar, Clock, AlertCircle, TrendingUp, Search } from 'lucide-react';
+import { Heart, Calendar, AlertCircle, Search } from 'lucide-react';
 import { getPregnantUsers } from '../utils/adminApi';
 import LoadingSpinner from '../components/LoadingSpinner';
 

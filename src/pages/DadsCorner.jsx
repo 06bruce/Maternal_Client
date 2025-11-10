@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { 
   Heart, 
   Calendar, 
   BookOpen, 
   MessageCircle, 
-  Baby, 
   Home, 
-  Utensils, 
   Shield,
   Users,
   Clock,
-  CheckCircle,
   AlertTriangle,
   Info
 } from 'lucide-react';

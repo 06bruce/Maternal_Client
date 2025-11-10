@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import {
-  Calendar,
-  Edit,
-  Trash2,
-  Filter,
-  Search,
-  User,
-  MapPin,
-  Clock,
-  CheckCircle,
-  XCircle,
-  AlertCircle
+import { 
+  Calendar, 
+  Edit, 
+  Trash2, 
+  User, 
+  MapPin, 
+  Clock, 
+  AlertCircle 
 } from 'lucide-react';
 import { api } from '../utils/api';
 import toast from 'react-hot-toast';
@@ -331,9 +327,28 @@ const AdminAppointments = () => {
     fetchAppointments();
   }, []);
 
+  const filterAppointments = useCallback(() => {
+    let filtered = appointments;
+
+    if (searchTerm) {
+      filtered = filtered.filter(appt => {
+        const userName = appt.userId?.name || appt.userName || '';
+        const centerName = appt.centerName || '';
+        return userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               centerName.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(appt => appt.status === statusFilter);
+    }
+
+    setFilteredAppointments(filtered);
+  }, [appointments, searchTerm, statusFilter]);
+
   useEffect(() => {
     filterAppointments();
-  }, [appointments, searchTerm, statusFilter]);
+  }, [filterAppointments]);
 
   const fetchAppointments = async () => {
     try {
@@ -352,26 +367,7 @@ const AdminAppointments = () => {
     }
   };
 
-  const filterAppointments = () => {
-    let filtered = appointments;
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(appt => {
-        const userName = appt.userId?.name || appt.userName || '';
-        const centerName = appt.centerName || '';
-        return userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               centerName.toLowerCase().includes(searchTerm.toLowerCase());
-      });
-    }
-
-    // Filter by status
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(appt => appt.status === statusFilter);
-    }
-
-    setFilteredAppointments(filtered);
-  };
+  
 
   const handleEdit = (appointment) => {
     setEditingAppointment(appointment);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { api, handleApiError } from '../utils/api';
 import toast from 'react-hot-toast';
 
@@ -29,6 +29,23 @@ export const EmergencyProvider = ({ children }) => {
       }
     }
   }, []);
+
+  // Memoize handler used inside the polling effect
+  const hospitalResponded = useCallback((hospital) => {
+    setRespondedHospital(hospital);
+    
+    // Update emergency data
+    const updatedEmergency = {
+      ...emergencyData,
+      respondedHospital: hospital,
+      status: 'responded',
+    };
+    
+    setEmergencyData(updatedEmergency);
+    localStorage.setItem('activeEmergency', JSON.stringify(updatedEmergency));
+    
+    toast.success(`${hospital.name} has responded to your emergency!`);
+  }, [emergencyData]);
 
   // Poll emergency status when active
   useEffect(() => {
@@ -68,7 +85,7 @@ export const EmergencyProvider = ({ children }) => {
     const interval = setInterval(checkStatus, 10000);
 
     return () => clearInterval(interval);
-  }, [emergencyActive, emergencyData?.id, respondedHospital]);
+  }, [emergencyActive, emergencyData?.id, respondedHospital, hospitalResponded]);
 
   const sendEmergencyAlert = async (userData, userLocation) => {
     try {
@@ -110,21 +127,7 @@ export const EmergencyProvider = ({ children }) => {
     }
   };
 
-  const hospitalResponded = (hospital) => {
-    setRespondedHospital(hospital);
-    
-    // Update emergency data
-    const updatedEmergency = {
-      ...emergencyData,
-      respondedHospital: hospital,
-      status: 'responded',
-    };
-    
-    setEmergencyData(updatedEmergency);
-    localStorage.setItem('activeEmergency', JSON.stringify(updatedEmergency));
-    
-    toast.success(`${hospital.name} has responded to your emergency!`);
-  };
+  
 
   const cancelEmergency = async () => {
     try {

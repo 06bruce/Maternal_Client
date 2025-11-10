@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Users, UserCheck, Heart, Activity, TrendingUp, Calendar, Clock, AlertTriangle } from 'lucide-react';
+import { Users, UserCheck, Heart, TrendingUp, Calendar, Clock, AlertTriangle } from 'lucide-react';
 import { getAnalytics } from '../utils/adminApi';
 import { api } from '../utils/api';
 import LoadingSpinner from '../components/LoadingSpinner';

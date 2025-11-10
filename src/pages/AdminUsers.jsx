@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Search, Edit2, Trash2, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Edit2, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getUsers, deleteUser } from '../utils/adminApi';
 import LoadingSpinner from '../components/LoadingSpinner';
 import toast from 'react-hot-toast';
@@ -218,20 +218,7 @@ const AdminUsers = () => {
     totalUsers: 0
   });
 
-  useEffect(() => {
-    fetchUsers();
-  }, [pagination.currentPage, genderFilter, pregnantFilter]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (search !== undefined) {
-        fetchUsers();
-      }
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [search]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -254,7 +241,20 @@ const AdminUsers = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.currentPage, genderFilter, pregnantFilter, search]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (search !== undefined) {
+        fetchUsers();
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search, fetchUsers]);
 
   const handleDelete = async (userId, userName) => {
     if (!window.confirm(`Are you sure you want to delete ${userName}?`)) {

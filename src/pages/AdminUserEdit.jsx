@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArrowLeft, Save } from 'lucide-react';
@@ -191,11 +191,7 @@ const AdminUserEdit = () => {
     }
   });
 
-  useEffect(() => {
-    fetchUser();
-  }, [id]);
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getUserById(id);
@@ -223,7 +219,11 @@ const AdminUserEdit = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
