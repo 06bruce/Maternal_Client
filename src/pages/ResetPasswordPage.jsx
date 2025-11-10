@@ -212,7 +212,6 @@ const ResetPasswordPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [validationErrors, setValidationErrors] = useState([]);
 
   useEffect(() => {
     const tokenFromUrl = searchParams.get('token');

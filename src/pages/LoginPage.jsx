@@ -20,7 +20,6 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import toast from 'react-hot-toast';
 
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 
 const LoginContainer = styled.div`
   min-height: 100vh;
@@ -213,26 +212,8 @@ const Divider = styled.div`
   }
 `;
 
-const SocialButton = styled.button`
-  width: 100%;
-  padding: var(--spacing-3) var(--spacing-4);
-  border: 2px solid var(--gray-200);
-  border-radius: var(--radius-lg);
-  background: var(--white);
-  color: var(--gray-700);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-2);
-  
-  &:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-`;
+// Removed unused SocialButton styled component
+// Google OAuth uses GoogleLogin component from @react-oauth/google
 
 const ClearDataButton = styled.button`
   width: 100%;

@@ -288,6 +288,7 @@ const HealthCenters = () => {
       setShowSectorModal(false);
       getUserLocation();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderStars = (rating) => {
