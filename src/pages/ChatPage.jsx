@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Send, Wifi, WifiOff } from 'lucide-react';
-import { useChat } from '../context/ChatContext';
+import { useChat } from '../context/ChatContext'; 
 import LoginBanner from '../components/LoginBanner';
-
+                                                                                                                                      
 const ChatContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;

@@ -51,6 +51,10 @@ import { UserProvider } from './context/UserContext';
 import { AdminProvider } from './context/AdminContext';
 import { EmergencyProvider } from './context/EmergencyContext';
 
+//Google Auth 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+
 const AppContainer = styled.div`
   min-height: 100vh;
   display: flex;
@@ -65,6 +69,7 @@ const MainContent = styled.main`
 
 function App() {
   return (
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <SpeedInsights />
@@ -144,6 +149,7 @@ function App() {
         </AdminProvider>
       </ErrorBoundary>
     </ThemeProvider>
+  </GoogleOAuthProvider>
   );
 }
 

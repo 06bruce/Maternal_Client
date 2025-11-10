@@ -86,6 +86,7 @@ export const api = {
   auth: {
     login: (credentials) => apiClient.post('/api/auth/login', credentials),
     register: (userData) => apiClient.post('/api/auth/register', userData),
+    googleAuth: (tokenData) => apiClient.post('/api/auth/google', tokenData),
     getProfile: () => apiClient.get('/api/auth/me'),
     updateProfile: (profileData) => apiClient.put('/api/auth/profile', profileData),
     logout: () => apiClient.post('/api/auth/logout'),
