@@ -307,19 +307,48 @@ const EmergencyButton = ({ compact = false }) => {
 
   const currentContent = content[language] || content.en;
 
+  const hasRequiredInfo = () => {
+    const requiredFields = ['name', 'phone', 'email', 'age', 'gender'];
+    return requiredFields.every(field => {
+      const hasField = user?.[field] != null && user[field] !== '';
+      if (!hasField) {
+        console.log(`Missing required field: ${field}`, { value: user?.[field] });
+      }
+      return hasField;
+    });
+  };
+
   const handleEmergencyClick = () => {
     if (emergencyActive) {
       setShowModal(true);
-    } else {
-      setIsConfirming(true);
+      return;
     }
+
+    // Check if user has all required information
+    if (!hasRequiredInfo()) {
+      toast.error('Please complete your profile information before sending an emergency alert');
+      // Optionally redirect to profile page
+      // navigate('/profile');
+      return;
+    }
+
+    // If we have all required info, show confirmation
+    setIsConfirming(true);
   };
 
   const handleConfirmEmergency = async () => {
     setLoading(true);
+    let userLocation = null;
+    
+    // First, check if we have all required user data
+    if (!hasRequiredInfo()) {
+      toast.error('Please complete your profile information before sending an emergency alert');
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Get user's location
-      let userLocation = null;
+      // Try to get user's location if available
       if (navigator.geolocation) {
         try {
           const position = await new Promise((resolve, reject) => {
@@ -338,36 +367,67 @@ const EmergencyButton = ({ compact = false }) => {
             lng: position.coords.longitude,
           };
         } catch (error) {
-          console.error('Error getting location:', error);
+          console.warn('Location access warning:', error);
           
-          // Show user-friendly error messages based on error code
+          // User-friendly error messages
           const errorMessages = {
-            1: 'Please allow location access to send accurate emergency alerts',
+            1: 'Location permission denied. Emergency will be sent without precise location.',
             2: 'Location unavailable. Emergency will be sent without location.',
             3: 'Location request timed out. Emergency will be sent without location.'
           };
           
-          toast.error(errorMessages[error.code] || 'Could not get your location');
+          const errorMessage = errorMessages[error.code] || 'Could not get your location. Emergency will be sent without it.';
+          toast.warning(errorMessage, { duration: 5000 });
           
-          // Continue without location if permission denied or error
+          // Continue without location for any error except explicit permission denial
           if (error.code === 1) {
-            // Permission denied - inform user but don't send
-            setLoading(false);
-            return;
+            // For permission denied, ask user if they want to continue without location
+            const shouldContinue = window.confirm(
+              'Without location, response times may be slower. Send emergency alert anyway?'
+            );
+            if (!shouldContinue) {
+              setLoading(false);
+              return;
+            }
           }
-          // For other errors, continue without location
         }
       } else {
-        toast.warning('Geolocation not supported. Emergency will be sent without location.');
+        toast.warning('Geolocation not supported. Emergency will be sent without location.', { duration: 5000 });
       }
 
+      // Show loading state
+      toast.loading('Sending emergency alert...');
+      
+      // Send the emergency alert
       await sendEmergencyAlert(user, userLocation);
+      
+      // Update UI state
       setIsConfirming(false);
       setShowModal(true);
+      
+      // Show success message
+      toast.dismiss();
+      toast.success('Emergency alert sent successfully!', { duration: 3000 });
+      
     } catch (error) {
       console.error('Error sending emergency alert:', error);
-      toast.error('Failed to send emergency alert. Please try again.');
+      
+      // More specific error messages based on error type
+      let errorMessage = 'Failed to send emergency alert.';
+      
+      if (error.message?.includes('network')) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (error.response?.status === 400) {
+        errorMessage = 'Invalid request. Please check your information and try again.';
+      } else if (error.response?.status === 401) {
+        errorMessage = 'Session expired. Please log in again.';
+      } else if (error.message?.includes('Missing required fields')) {
+        errorMessage = 'Your profile is missing required information. Please update your profile.';
+      }
+      
+      toast.error(errorMessage, { duration: 5000 });
     } finally {
+      toast.dismiss();
       setLoading(false);
     }
   };

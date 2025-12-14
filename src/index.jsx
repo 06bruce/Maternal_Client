@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import App from './App';
 import './index.css';
+import './i18n'; // Initialize i18n
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -439,7 +439,7 @@ const ProfilePage = () => {
   const fetchAppointments = async () => {
     setLoadingAppointments(true);
     try {
-      const response = await api.appointments.getByUser();
+      const response = await api.appointments.getByUserId();
       setAppointments(response.data || []);
     } catch (err) {
       toast.error('Failed to load appointments');
@@ -511,9 +511,9 @@ const ProfilePage = () => {
               </InfoIcon>
               <InfoContent>
                 <InfoLabel>Name</InfoLabel>
-                <InfoValue>{user?.name || 'Not set'}</InfoValue>
+                <InfoValue>{user?.name ||' Not Set' }</InfoValue>
               </InfoContent>
-            </InfoItem>
+            </InfoItem> 
 
             <InfoItem>
               <InfoIcon>
@@ -591,6 +591,17 @@ const ProfilePage = () => {
                 placeholder="Enter your age"
                 min="13"
                 max="100"
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <Label> Gender </Label>
+              <Input
+                type="text"
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                placeholder="Enter your gender"
               />
             </FormGroup>
 

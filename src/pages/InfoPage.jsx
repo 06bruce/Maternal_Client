@@ -89,7 +89,7 @@ const InfoPage = ({ type = 'terms' }) => {
       case 'terms':
         return {
           title: 'Terms & Conditions',
-          subtitle: 'Last updated: October 10, 2025',
+          subtitle: `Last Update: 10 Oct 2025 ` ,
           sections: [
             {
               heading: '1. Acceptance of Terms',
@@ -141,7 +141,7 @@ const InfoPage = ({ type = 'terms' }) => {
             }
           ]
         };
-      
+
       case 'privacy':
         return {
           title: 'Privacy Policy',
@@ -205,7 +205,7 @@ const InfoPage = ({ type = 'terms' }) => {
             }
           ]
         };
-      
+
       case 'faq':
         return {
           title: 'Frequently Asked Questions',
@@ -277,7 +277,7 @@ const InfoPage = ({ type = 'terms' }) => {
             }
           ]
         };
-      
+
       case 'support':
         return {
           title: 'Support & Contact',
@@ -333,7 +333,7 @@ const InfoPage = ({ type = 'terms' }) => {
             }
           ]
         };
-      
+
       default:
         return {
           title: 'Information',

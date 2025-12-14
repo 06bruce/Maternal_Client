@@ -1,0 +1,16 @@
+services:
+  # Development server with hot-reload
+  app:
+    build: .
+    container_name: maternal-client
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WDS_SOCKET_PORT=0
+    working_dir: /app
+    command: npm start

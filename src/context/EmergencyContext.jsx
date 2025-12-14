@@ -89,31 +89,48 @@ export const EmergencyProvider = ({ children }) => {
 
   const sendEmergencyAlert = async (userData, userLocation) => {
     try {
-      // Send emergency alert to backend
-      const response = await api.emergency.sendAlert({
+      // Validate required fields
+      const requiredFields = ['name', 'phone', 'email', 'age', 'gender'];
+      const missingFields = requiredFields.filter(field => !userData?.[field]);
+      
+      if (missingFields.length > 0) {
+        throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+      }
+
+      // Prepare emergency data
+      const emergencyRequest = {
         userData: {
-          name: userData.name,
-          phone: userData.phone,
-          email: userData.email,
-          age: userData.age,
-          gender: userData.gender,
+          name: userData.name.trim(),
+          phone: userData.phone.trim(),
+          email: userData.email.trim(),
+          age: Number(userData.age),
+          gender: userData.gender.trim(),
         },
-        location: userLocation,
+        location: userLocation || null,
         timestamp: new Date().toISOString(),
-      });
+      };
+
+      // Send emergency alert to backend
+      const response = await api.emergency.sendAlert(emergencyRequest);
+
+      if (!response.data?.emergencyId) {
+        throw new Error('Invalid response from server');
+      }
 
       const emergencyInfo = {
         id: response.data.emergencyId,
-        userData,
+        userData: emergencyRequest.userData,
         hospitals: response.data.hospitals || [],
-        hospitalIds: response.data.alertedHospitals,
+        hospitalIds: response.data.alertedHospitals || [],
         timestamp: new Date().toISOString(),
         status: 'pending',
+        location: userLocation,
       };
 
+      // Update state
       setEmergencyData(emergencyInfo);
       setEmergencyActive(true);
-      setAlertedHospitals(response.data.hospitals || []);
+      setAlertedHospitals(emergencyInfo.hospitals);
       
       // Save to localStorage for persistence
       localStorage.setItem('activeEmergency', JSON.stringify(emergencyInfo));

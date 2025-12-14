@@ -1,0 +1,82 @@
+{
+    "common": {
+        "welcome": "Murakaza neza",
+        "login": "Injira",
+        "register": "Iyandikishe",
+        "logout": "Sohoka",
+        "submit": "Ohereza",
+        "cancel": "Hagarika",
+        "save": "Bika",
+        "delete": "Siba",
+        "edit": "Hindura",
+        "back": "Subira inyuma",
+        "next": "Komeza",
+        "loading": "Tugira...",
+        "error": "Ikosa",
+        "success": "Byagenze neza",
+        "email": "Imeli",
+        "password": "Ijambo ry'ibanga",
+        "name": "Izina",
+        "phone": "Numero ya telefoni",
+        "age": "Imyaka",
+        "gender": "Igitsina",
+        "male": "Gabo",
+        "female": "Gore",
+        "other": "Ikindi",
+        "prefer_not_to_say": "Ntashaka kuvuga"
+    },
+    "nav": {
+        "home": "Ahabanza",
+        "chat": "Ganira",
+        "pregnancy_tracker": "Gukurikirana inda",
+        "dads_corner": "Aho papa bihurira",
+        "health_centers": "Ibigo nderabuzima",
+        "mental_health": "Ubuzima bwo mu mutwe",
+        "profile": "Umwirondoro wanjye",
+        "about": "Ibyerekeye",
+        "faq": "Ibibazo bikunze kubazwa",
+        "support": "Ubufasha"
+    },
+    "auth": {
+        "email_verification_sent": "Imeli yo kwemeza yoherejwe!",
+        "email_verified": "Imeli yemejwe neza!",
+        "login_success": "Kwinjira byagenze neza!",
+        "register_success": "Kwiyandikisha byagenze neza!",
+        "logout_success": "Gusohoka byagenze neza",
+        "invalid_credentials": "Imeli cyangwa ijambo ry'ibanga ntabwo birahuye",
+        "email_required": "Imeli irakenewe",
+        "password_required": "Ijambo ry'ibanga rirakenewe",
+        "password_min_length": "Ijambo ry'ibanga rigomba kuba nibura 6",
+        "forgot_password": "Wibagiwe ijambo ry'ibanga?",
+        "reset_password": "Subiza ijambo ry'ibanga",
+        "verify_email": "Emeza imeli"
+    },
+    "home": {
+        "hero_title": "Inshuti yawe mu nda",
+        "hero_subtitle": "Ubupfura ku buzima mu rurimi rwawe",
+        "get_started": "Tangira",
+        "learn_more": "Menya byinshi"
+    },
+    "chat": {
+        "title": "Umufasha w'ubuzima",
+        "placeholder": "Bambaza ikintu cyose ku byerekeye inda...",
+        "send": "Ohereza",
+        "typing": "Urarandika..."
+    },
+    "pregnancy": {
+        "tracker_title": "Gukurikirana inda",
+        "current_week": "Icyumweru cy'ubu",
+        "weeks_pregnant": "Ibyumweru by'inda",
+        "due_date": "Itariki yo kubyara"
+    },
+    "appointments": {
+        "title": "Amasaha yo kwipimisha",
+        "book_appointment": "Tegeka isaha",
+        "my_appointments": "Amasaha yanjye"
+    },
+    "emergency": {
+        "title": "Ibyihutirwa",
+        "sos_button": "SOS",
+        "alert_sent": "Itangazo ryoherejwe!"
+    }
+}

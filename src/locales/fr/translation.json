@@ -1,0 +1,82 @@
+{
+    "common": {
+        "welcome": "Bienvenue",
+        "login": "Connexion",
+        "register": "S'inscrire",
+        "logout": "Déconnexion",
+        "submit": "Soumettre",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "back": "Retour",
+        "next": "Suivant",
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "success": "Succès",
+        "email": "Email",
+        "password": "Mot de passe",
+        "name": "Nom",
+        "phone": "Téléphone",
+        "age": "Âge",
+        "gender": "Genre",
+        "male": "Homme",
+        "female": "Femme",
+        "other": "Autre",
+        "prefer_not_to_say": "Préfère ne pas dire"
+    },
+    "nav": {
+        "home": "Accueil",
+        "chat": "Chat",
+        "pregnancy_tracker": "Suivi de grossesse",
+        "dads_corner": "Coin des papas",
+        "health_centers": "Centres de santé",
+        "mental_health": "Santé mentale",
+        "profile": "Profil",
+        "about": "À propos",
+        "faq": "FAQ",
+        "support": "Assistance"
+    },
+    "auth": {
+        "email_verification_sent": "Email de vérification envoyé!",
+        "email_verified": "Email vérifié avec succès!",
+        "login_success": "Connexion réussie!",
+        "register_success": "Inscription réussie!",
+        "logout_success": "Déconnexion réussie",
+        "invalid_credentials": "Email ou mot de passe invalide",
+        "email_required": "L'email est requis",
+        "password_required": "Le mot de passe est requis",
+        "password_min_length": "Le mot de passe doit contenir au moins 6 caractères",
+        "forgot_password": "Mot de passe oublié?",
+        "reset_password": "Réinitialiser le mot de passe",
+        "verify_email": "Vérifier l'email"
+    },
+    "home": {
+        "hero_title": "Votre compagnon de grossesse de confiance",
+        "hero_subtitle": "Des conseils de santé maternelle personnalisés dans votre langue",
+        "get_started": "Commencer",
+        "learn_more": "En savoir plus"
+    },
+    "chat": {
+        "title": "Assistant santé",
+        "placeholder": "Posez-moi des questions sur la grossesse...",
+        "send": "Envoyer",
+        "typing": "En train d'écrire..."
+    },
+    "pregnancy": {
+        "tracker_title": "Suivi de grossesse",
+        "current_week": "Semaine actuelle",
+        "weeks_pregnant": "Semaines de grossesse",
+        "due_date": "Date d'accouchement"
+    },
+    "appointments": {
+        "title": "Rendez-vous",
+        "book_appointment": "Prendre rendez-vous",
+        "my_appointments": "Mes rendez-vous"
+    },
+    "emergency": {
+        "title": "Urgence",
+        "sos_button": "SOS",
+        "alert_sent": "Alerte envoyée!"
+    }
+}
