@@ -250,14 +250,14 @@ const ButtonGroup = styled.div`
 const EmergencyButton = ({ compact = false }) => {
   const { user, isAuthenticated } = useUser();
   const { language } = useChat();
-  const { 
-    emergencyActive, 
-    emergencyData, 
+  const {
+    emergencyActive,
+    emergencyData,
     respondedHospital,
-    sendEmergencyAlert, 
-    cancelEmergency 
+    sendEmergencyAlert,
+    cancelEmergency
   } = useEmergency();
-  
+
   const [showModal, setShowModal] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -339,7 +339,7 @@ const EmergencyButton = ({ compact = false }) => {
   const handleConfirmEmergency = async () => {
     setLoading(true);
     let userLocation = null;
-    
+
     // First, check if we have all required user data
     if (!hasRequiredInfo()) {
       toast.error('Please complete your profile information before sending an emergency alert');
@@ -353,10 +353,10 @@ const EmergencyButton = ({ compact = false }) => {
         try {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(
-              resolve, 
+              resolve,
               reject,
-              { 
-                timeout: 10000, 
+              {
+                timeout: 10000,
                 enableHighAccuracy: true,
                 maximumAge: 300000 // Accept cached location up to 5 minutes old
               }
@@ -368,17 +368,20 @@ const EmergencyButton = ({ compact = false }) => {
           };
         } catch (error) {
           console.warn('Location access warning:', error);
-          
+
           // User-friendly error messages
           const errorMessages = {
             1: 'Location permission denied. Emergency will be sent without precise location.',
             2: 'Location unavailable. Emergency will be sent without location.',
             3: 'Location request timed out. Emergency will be sent without location.'
           };
-          
+
           const errorMessage = errorMessages[error.code] || 'Could not get your location. Emergency will be sent without it.';
-          toast.warning(errorMessage, { duration: 5000 });
-          
+          toast(errorMessage, {
+            icon: '⚠️',
+            duration: 5000
+          });
+
           // Continue without location for any error except explicit permission denial
           if (error.code === 1) {
             // For permission denied, ask user if they want to continue without location
@@ -392,29 +395,32 @@ const EmergencyButton = ({ compact = false }) => {
           }
         }
       } else {
-        toast.warning('Geolocation not supported. Emergency will be sent without location.', { duration: 5000 });
+        toast('Geolocation not supported. Emergency will be sent without location.', {
+          icon: '⚠️',
+          duration: 5000
+        });
       }
 
       // Show loading state
       toast.loading('Sending emergency alert...');
-      
+
       // Send the emergency alert
       await sendEmergencyAlert(user, userLocation);
-      
+
       // Update UI state
       setIsConfirming(false);
       setShowModal(true);
-      
+
       // Show success message
       toast.dismiss();
       toast.success('Emergency alert sent successfully!', { duration: 3000 });
-      
+
     } catch (error) {
       console.error('Error sending emergency alert:', error);
-      
+
       // More specific error messages based on error type
       let errorMessage = 'Failed to send emergency alert.';
-      
+
       if (error.message?.includes('network')) {
         errorMessage = 'Network error. Please check your connection and try again.';
       } else if (error.response?.status === 400) {
@@ -424,7 +430,7 @@ const EmergencyButton = ({ compact = false }) => {
       } else if (error.message?.includes('Missing required fields')) {
         errorMessage = 'Your profile is missing required information. Please update your profile.';
       }
-      
+
       toast.error(errorMessage, { duration: 5000 });
     } finally {
       toast.dismiss();
@@ -508,8 +514,8 @@ const EmergencyButton = ({ compact = false }) => {
                 <div className="info-item">
                   <span className="label">{currentContent.gender}:</span>
                   <span className="value">
-                    {user?.gender === 'male' ? currentContent.male : 
-                     user?.gender === 'female' ? currentContent.female : 'N/A'}
+                    {user?.gender === 'male' ? currentContent.male :
+                      user?.gender === 'female' ? currentContent.female : 'N/A'}
                   </span>
                 </div>
               </UserInfo>
@@ -521,8 +527,8 @@ const EmergencyButton = ({ compact = false }) => {
                     {currentContent.alertedHospitals}
                   </h3>
                   {emergencyData.hospitals && emergencyData.hospitals.map((hospital) => (
-                    <HospitalCard 
-                      key={hospital.id} 
+                    <HospitalCard
+                      key={hospital.id}
                       $responded={respondedHospital?.id === hospital.id}
                     >
                       <div className="hospital-name">
@@ -537,8 +543,8 @@ const EmergencyButton = ({ compact = false }) => {
                       </div>
                       <div className={`status ${respondedHospital?.id === hospital.id ? 'responded' : 'pending'}`}>
                         <Clock size={16} />
-                        {respondedHospital?.id === hospital.id ? 
-                          currentContent.responded : 
+                        {respondedHospital?.id === hospital.id ?
+                          currentContent.responded :
                           currentContent.pending}
                       </div>
                     </HospitalCard>
@@ -552,8 +558,8 @@ const EmergencyButton = ({ compact = false }) => {
                     <button className="cancel" onClick={() => setIsConfirming(false)}>
                       {currentContent.cancel}
                     </button>
-                    <button 
-                      className="confirm" 
+                    <button
+                      className="confirm"
                       onClick={handleConfirmEmergency}
                       disabled={loading}
                     >
